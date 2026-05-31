@@ -410,9 +410,9 @@
   <!-- 填寫表單 -->
   <div id="page-form" class="page active">
     <div class="header">
-      <div class="header-tag">紀家見面會 · 2025</div>
+      <div class="header-tag">紀家見面會 · 2026</div>
       <h1>紀沐煦滿四個月了<br>紀家見面會聚餐</h1>
-      <p>請於 <strong>6月7日</strong> 前完成填寫。<br>每個家庭填寫一份即可。</p>
+      <p>請於 <strong>7月5日</strong> 前完成填寫。<br>每個家庭填寫一份即可。</p>
     </div>
     <div class="form-body">
       <div class="field">
@@ -432,44 +432,17 @@
         <input type="text" id="name" placeholder="請填寫您的姓名">
       </div>
       <div class="field">
-        <label>出席日期與人數 <span class="req">*</span></label>
+        <label>出席人數 <span class="req">*</span></label>
         <div class="date-cards">
-          <div class="date-card" id="card-711" onclick="toggleDate('711')">
-            <div class="date-card-top">
-              <div class="date-checkbox" id="chk-711"><i class="ti ti-check"></i></div>
-              <div>
-                <div class="date-label">7月11日（五）</div>
-                <div class="date-sub">勾選後填寫出席人數</div>
-              </div>
-            </div>
-            <div class="date-counts" id="cnt-711">
-              <div class="count-group">
-                <label>大人（18歲以上）</label>
-                <div class="count-row">
-                  <button class="count-btn" onclick="adjust('711','a',-1,event)">−</button>
-                  <span class="count-val" id="val-711a">1</span>
-                  <button class="count-btn" onclick="adjust('711','a',1,event)">+</button>
-                </div>
-              </div>
-              <div class="count-group">
-                <label>小孩（18歲以下）</label>
-                <div class="count-row">
-                  <button class="count-btn" onclick="adjust('711','k',-1,event)">−</button>
-                  <span class="count-val" id="val-711k">0</span>
-                  <button class="count-btn" onclick="adjust('711','k',1,event)">+</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="date-card" id="card-712" onclick="toggleDate('712')">
+          <div class="date-card selected" id="card-712">
             <div class="date-card-top">
               <div class="date-checkbox" id="chk-712"><i class="ti ti-check"></i></div>
               <div>
-                <div class="date-label">7月12日（六）</div>
-                <div class="date-sub">勾選後填寫出席人數</div>
+                <div class="date-label">7月12日（日）</div>
+                <div class="date-sub">請填寫出席人數</div>
               </div>
             </div>
-            <div class="date-counts" id="cnt-712">
+            <div class="date-counts" id="cnt-712" style="display:flex">
               <div class="count-group">
                 <label>大人（18歲以上）</label>
                 <div class="count-row">
@@ -534,11 +507,6 @@
     <div id="admin-overview">
       <div class="metrics-grid">
         <div class="metric-card">
-          <div class="m-label">7/11 出席</div>
-          <div class="m-val" id="m-711">0</div>
-          <div class="m-sub">人</div>
-        </div>
-        <div class="metric-card">
           <div class="m-label">7/12 出席</div>
           <div class="m-val" id="m-712">0</div>
           <div class="m-sub">人</div>
@@ -548,22 +516,13 @@
           <div class="m-val" id="m-replied">0</div>
           <div class="m-sub">/ 6 個家族</div>
         </div>
-        <div class="metric-card">
-          <div class="m-label">兩天都出席</div>
-          <div class="m-val" id="m-both">0</div>
-          <div class="m-sub">筆回覆</div>
-        </div>
       </div>
 
       <div class="section-title">各家族出席狀況</div>
       <div class="card-list" id="family-table"></div>
 
-      <div class="legend" style="margin-top:1.25rem">
-        <span><span class="legend-dot" style="background:#1D9E75"></span>7/11</span>
-        <span><span class="legend-dot" style="background:#378ADD"></span>7/12</span>
-      </div>
       <div class="chart-wrap">
-        <canvas id="attendChart" role="img" aria-label="各家族7月11日與7月12日出席人數長條圖">出席人數統計圖</canvas>
+        <canvas id="attendChart" role="img" aria-label="各家族7月12日出席人數長條圖">出席人數統計圖</canvas>
       </div>
     </div>
 
@@ -580,10 +539,10 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 const FAMILIES = ['許鳳英','紀瑞熙','紀振芳','紀志儒','紀麗華','紀富男'];
-const ADMIN_PASS = '2025family';
-const STORAGE_KEY = 'ji_reunion_2025';
+const ADMIN_PASS = '2026family';
+const STORAGE_KEY = 'ji_reunion_2026';
 let chartInstance = null;
-let sel711 = false, sel712 = false;
+// 7/12 is the only date
 
 function goPage(p) {
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
@@ -596,12 +555,7 @@ function checkPass() {
   if (v === ADMIN_PASS) { document.getElementById('pass-err').textContent = ''; goPage('admin'); }
   else document.getElementById('pass-err').textContent = '密碼錯誤，請再試一次。';
 }
-function toggleDate(day) {
-  const card = document.getElementById('card-' + day);
-  const was = card.classList.contains('selected');
-  if (day === '711') sel711 = !was; else sel712 = !was;
-  card.classList.toggle('selected', !was);
-}
+// Date is fixed to 7/12
 function adjust(day, type, delta, e) {
   e.stopPropagation();
   const el = document.getElementById('val-' + day + type);
@@ -616,11 +570,10 @@ function submitForm() {
   const name = document.getElementById('name').value.trim();
   if (!family) { alert('請選擇家族'); return; }
   if (!name) { alert('請填寫姓名'); return; }
-  if (!sel711 && !sel712) { alert('請至少選擇一個出席日期'); return; }
+  // 7/12 is the only date, always selected
   const entry = {
     id: Date.now(), family, name,
-    day711: sel711 ? { adults: +document.getElementById('val-711a').textContent, kids: +document.getElementById('val-711k').textContent } : null,
-    day712: sel712 ? { adults: +document.getElementById('val-712a').textContent, kids: +document.getElementById('val-712k').textContent } : null,
+    day712: { adults: +document.getElementById('val-712a').textContent, kids: +document.getElementById('val-712k').textContent },
     note: document.getElementById('note').value.trim(),
     ts: new Date().toLocaleString('zh-TW')
   };
@@ -636,20 +589,16 @@ function switchTab(t) {
 }
 function renderAdmin() {
   const data = loadData();
-  let t711 = 0, t712 = 0, both = 0;
-  const fm = {}; FAMILIES.forEach(f => fm[f] = {d711:0, d712:0});
+  let t712 = 0;
+  const fm = {}; FAMILIES.forEach(f => fm[f] = {d712:0});
   data.forEach(r => {
-    const n711 = r.day711 ? r.day711.adults + r.day711.kids : 0;
     const n712 = r.day712 ? r.day712.adults + r.day712.kids : 0;
-    t711 += n711; t712 += n712;
-    if (r.day711 && r.day712) both++;
-    if (fm[r.family]) { fm[r.family].d711 += n711; fm[r.family].d712 += n712; }
+    t712 += n712;
+    if (fm[r.family]) { fm[r.family].d712 += n712; }
   });
   const replied = new Set(data.map(r => r.family)).size;
-  document.getElementById('m-711').textContent = t711;
   document.getElementById('m-712').textContent = t712;
   document.getElementById('m-replied').textContent = replied;
-  document.getElementById('m-both').textContent = both;
   document.getElementById('admin-count').textContent = '共 ' + data.length + ' 筆回覆';
   const ft = document.getElementById('family-table');
   ft.innerHTML = '';
@@ -657,9 +606,8 @@ function renderAdmin() {
     const d = fm[f];
     const row = document.createElement('div'); row.className = 'card-row';
     let pills = '';
-    if (d.d711 > 0) pills += `<span class="pill pill-green">${d.d711}人 7/11</span>`;
     if (d.d712 > 0) pills += `<span class="pill pill-blue">${d.d712}人 7/12</span>`;
-    if (!d.d711 && !d.d712) pills = `<span class="pill pill-gray">未回覆</span>`;
+    if (!d.d712) pills = `<span class="pill pill-gray">未回覆</span>`;
     row.innerHTML = `<span class="row-name">${f}</span>${pills}`;
     ft.appendChild(row);
   });
@@ -672,7 +620,6 @@ function renderAdmin() {
     data: {
       labels: FAMILIES,
       datasets: [
-        { label: '7/11', data: FAMILIES.map(f => fm[f].d711), backgroundColor: '#1D9E75', borderRadius: 4 },
         { label: '7/12', data: FAMILIES.map(f => fm[f].d712), backgroundColor: '#378ADD', borderRadius: 4 }
       ]
     },
@@ -693,9 +640,8 @@ function renderRecords() {
   el.innerHTML = '';
   [...data].reverse().forEach(r => {
     const div = document.createElement('div'); div.className = 'response-item';
-    const d711 = r.day711 ? `7/11：${r.day711.adults}大${r.day711.kids}小` : '';
-    const d712 = r.day712 ? `7/12：${r.day712.adults}大${r.day712.kids}小` : '';
-    const dates = [d711, d712].filter(Boolean).join('　');
+    const d712 = r.day712 ? `7/12：${r.day712.adults}大${r.day712.kids}小` : '—';
+    const dates = d712;
     div.innerHTML = `
       <div class="r-top"><span class="r-name">${r.name}</span>
         <button class="del-btn" onclick="deleteEntry(${r.id})" title="刪除"><i class="ti ti-trash" style="font-size:15px"></i></button>
