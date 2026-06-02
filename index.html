@@ -56,359 +56,239 @@
     padding: 0 0 3rem;
   }
 
-  .container {
-    width: 100%;
-    max-width: 480px;
-    background: var(--color-bg);
-    min-height: 100vh;
-  }
+  .container { width: 100%; max-width: 480px; background: var(--color-bg); min-height: 100vh; }
 
   .page { display: none; }
   .page.active { display: block; }
 
-  /* Header */
-  .header {
-    padding: 1.5rem 1.25rem 1.25rem;
-    border-bottom: 0.5px solid var(--color-border);
-    margin-bottom: 1.5rem;
-  }
-  .header-tag {
-    font-size: 11px;
-    color: var(--color-text-tertiary);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .header h1 {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    line-height: 1.4;
-  }
-  .header p {
-    font-size: 13px;
-    color: var(--color-text-secondary);
-    margin-top: 8px;
+  /* LINE hint */
+  .line-hint {
+    display: none;
+    background: #f0f9f5;
+    border-bottom: 1px solid #c3e8d8;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #0F6E56;
     line-height: 1.6;
+    text-align: center;
   }
+  @media (prefers-color-scheme: dark) {
+    .line-hint { background: #0d3326; border-color: #1a5c40; color: #5DCAA5; }
+  }
+
+  /* Header */
+  .header { padding: 1.5rem 1.25rem 1.25rem; border-bottom: 0.5px solid var(--color-border); margin-bottom: 1.5rem; }
+  .header-tag { font-size: 11px; color: var(--color-text-tertiary); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .header h1 { font-size: 20px; font-weight: 600; color: var(--color-text-primary); line-height: 1.4; }
+  .header p { font-size: 13px; color: var(--color-text-secondary); margin-top: 8px; line-height: 1.6; }
   .header p strong { font-weight: 600; color: var(--color-text-primary); }
 
   /* Form */
   .form-body { padding: 0 1.25rem; }
-
   .field { margin-bottom: 1.375rem; }
-  .field > label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--color-text-primary);
-    margin-bottom: 7px;
-  }
+  .field > label { display: block; font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 7px; }
   .req { color: var(--color-danger); margin-left: 2px; }
 
   input[type="text"],
   input[type="password"],
-  select,
   textarea {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 15px;
-    background: var(--color-bg);
-    color: var(--color-text-primary);
-    border: 0.5px solid var(--color-border-strong);
-    border-radius: var(--radius-md);
-    outline: none;
-    font-family: inherit;
-    -webkit-appearance: none;
-    appearance: none;
+    width: 100%; padding: 10px 12px; font-size: 15px;
+    background: var(--color-bg); color: var(--color-text-primary);
+    border: 0.5px solid var(--color-border-strong); border-radius: var(--radius-md);
+    outline: none; font-family: inherit; -webkit-appearance: none; appearance: none;
     transition: border-color 0.15s;
   }
-  input[type="text"]:focus,
-  input[type="password"]:focus,
-  select:focus,
-  textarea:focus {
-    border-color: var(--green);
-    box-shadow: 0 0 0 3px rgba(29,158,117,0.12);
+  input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+    border-color: var(--green); box-shadow: 0 0 0 3px rgba(29,158,117,0.12);
   }
   textarea { min-height: 72px; resize: vertical; line-height: 1.5; }
+
+  /* Custom select */
+  .custom-select-wrap { position: relative; }
+  .custom-select-trigger {
+    width: 100%; padding: 10px 36px 10px 12px; font-size: 15px;
+    background: var(--color-bg); color: var(--color-text-primary);
+    border: 0.5px solid var(--color-border-strong); border-radius: var(--radius-md);
+    cursor: pointer; user-select: none; display: flex; align-items: center;
+    justify-content: space-between; transition: border-color 0.15s;
+    -webkit-tap-highlight-color: transparent; min-height: 44px;
+  }
+  .custom-select-trigger.open {
+    border-color: var(--green); box-shadow: 0 0 0 3px rgba(29,158,117,0.12);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+  .custom-select-trigger.placeholder { color: var(--color-text-tertiary); }
+  .custom-select-arrow { font-size: 12px; color: var(--color-text-tertiary); transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+  .custom-select-trigger.open .custom-select-arrow { transform: rotate(180deg); }
+  .custom-select-dropdown {
+    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--color-bg); border: 0.5px solid var(--green); border-top: none;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 200;
+    max-height: 220px; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+  .custom-select-dropdown.open { display: block; }
+  .custom-select-option {
+    padding: 13px 14px; font-size: 15px; cursor: pointer;
+    border-bottom: 0.5px solid var(--color-border); color: var(--color-text-primary);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .custom-select-option:last-child { border-bottom: none; }
+  .custom-select-option:active { background: var(--green-light); }
+  .custom-select-option.selected { background: var(--green-light); color: var(--green-dark); font-weight: 500; }
+  .select-overlay { display: none; position: fixed; inset: 0; z-index: 199; }
+  .select-overlay.active { display: block; }
 
   /* Date cards */
   .date-cards { display: flex; flex-direction: column; gap: 10px; }
   .date-card {
-    border: 0.5px solid var(--color-border-strong);
-    border-radius: var(--radius-lg);
-    padding: 14px;
-    cursor: pointer;
-    background: var(--color-bg);
-    transition: border-color 0.15s, background 0.15s;
-    user-select: none;
+    border: 0.5px solid var(--color-border-strong); border-radius: var(--radius-lg);
+    padding: 14px; cursor: pointer; background: var(--color-bg);
+    transition: border-color 0.15s, background 0.15s; user-select: none;
   }
   .date-card:active { opacity: 0.85; }
-  .date-card.selected {
-    border: 1.5px solid var(--green);
-    background: var(--green-light);
-  }
+  .date-card.selected { border: 1.5px solid var(--green); background: var(--green-light); }
   .date-card-top { display: flex; align-items: center; gap: 12px; }
   .date-checkbox {
-    width: 22px; height: 22px;
-    border-radius: 6px;
+    width: 22px; height: 22px; border-radius: 6px;
     border: 1.5px solid var(--color-border-strong);
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    color: transparent;
-    transition: all 0.15s;
-    font-size: 14px;
+    flex-shrink: 0; color: transparent; transition: all 0.15s; font-size: 14px;
   }
-  .date-card.selected .date-checkbox {
-    background: var(--green);
-    border-color: var(--green);
-    color: white;
-  }
+  .date-card.selected .date-checkbox { background: var(--green); border-color: var(--green); color: white; }
   .date-label { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
   .date-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; }
-
-  .date-counts {
-    display: none;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 0.5px solid var(--color-border);
-    gap: 12px;
-  }
+  .date-counts { display: none; margin-top: 14px; padding-top: 12px; border-top: 0.5px solid var(--color-border); gap: 12px; }
   .date-card.selected .date-counts { display: flex; }
-
   .count-group { flex: 1; }
-  .count-group > label {
-    font-size: 12px;
-    color: var(--color-text-secondary);
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 400;
-  }
+  .count-group > label { font-size: 12px; color: var(--color-text-secondary); display: block; margin-bottom: 6px; font-weight: 400; }
   .count-row { display: flex; align-items: center; gap: 8px; }
   .count-btn {
-    width: 32px; height: 32px;
-    border-radius: var(--radius-md);
-    border: 0.5px solid var(--color-border-strong);
-    background: var(--color-bg-secondary);
-    cursor: pointer;
-    font-size: 18px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--color-text-primary);
-    flex-shrink: 0;
-    line-height: 1;
-    transition: background 0.1s;
+    width: 32px; height: 32px; border-radius: var(--radius-md);
+    border: 0.5px solid var(--color-border-strong); background: var(--color-bg-secondary);
+    cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;
+    color: var(--color-text-primary); flex-shrink: 0; line-height: 1; transition: background 0.1s;
   }
   .count-btn:active { background: var(--color-bg-tertiary); transform: scale(0.94); }
-  .count-val {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    min-width: 28px;
-    text-align: center;
-  }
+  .count-val { font-size: 20px; font-weight: 600; color: var(--color-text-primary); min-width: 28px; text-align: center; }
 
   /* Buttons */
   .submit-btn {
-    width: 100%;
-    background: var(--green);
-    color: white;
-    border: none;
-    border-radius: var(--radius-lg);
-    padding: 15px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    margin: 1.75rem 0 0.875rem;
-    transition: opacity 0.15s;
-    letter-spacing: 0.01em;
+    width: 100%; background: var(--green); color: white; border: none;
+    border-radius: var(--radius-lg); padding: 15px; font-size: 16px; font-weight: 600;
+    cursor: pointer; margin: 1.75rem 0 0.875rem; transition: opacity 0.15s;
+    letter-spacing: 0.01em; font-family: inherit;
   }
   .submit-btn:active { opacity: 0.82; }
-
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .secondary-btn {
-    width: 100%;
-    background: transparent;
-    color: var(--color-text-tertiary);
-    border: 0.5px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 11px;
-    font-size: 13px;
-    cursor: pointer;
-    margin-bottom: 2rem;
-    font-family: inherit;
-    transition: color 0.15s, border-color 0.15s;
+    width: 100%; background: transparent; color: var(--color-text-tertiary);
+    border: 0.5px solid var(--color-border); border-radius: var(--radius-lg);
+    padding: 11px; font-size: 13px; cursor: pointer; margin-bottom: 2rem;
+    font-family: inherit; transition: color 0.15s, border-color 0.15s;
   }
   .secondary-btn:hover { color: var(--color-text-secondary); border-color: var(--color-border-strong); }
+
+  /* Spinner */
+  .spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.4); border-top-color: white;
+    border-radius: 50%; animation: spin 0.7s linear infinite;
+    margin-right: 8px; vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* Success */
   .centered-screen { padding: 4rem 2rem; text-align: center; }
   .icon-circle {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    background: var(--green-light);
+    width: 64px; height: 64px; border-radius: 50%; background: var(--green-light);
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 1.25rem;
-    font-size: 28px;
-    color: var(--green);
+    margin: 0 auto 1.25rem; font-size: 28px; color: var(--green);
   }
-  .centered-screen h2 {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    margin-bottom: 10px;
-  }
-  .centered-screen p {
-    font-size: 14px;
-    color: var(--color-text-secondary);
-    line-height: 1.7;
-  }
+  .centered-screen h2 { font-size: 20px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 10px; }
+  .centered-screen p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.7; }
   .ghost-btn {
-    margin-top: 1.75rem;
-    background: transparent;
-    border: 0.5px solid var(--color-border-strong);
-    border-radius: var(--radius-lg);
-    padding: 11px 24px;
-    font-size: 13px;
-    cursor: pointer;
-    color: var(--color-text-secondary);
-    font-family: inherit;
+    margin-top: 1.75rem; background: transparent;
+    border: 0.5px solid var(--color-border-strong); border-radius: var(--radius-lg);
+    padding: 11px 24px; font-size: 13px; cursor: pointer;
+    color: var(--color-text-secondary); font-family: inherit;
   }
 
   /* Admin */
   .admin-header {
-    padding: 1.25rem 1.25rem 0.875rem;
-    border-bottom: 0.5px solid var(--color-border);
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 1.25rem;
+    padding: 1.25rem 1.25rem 0.875rem; border-bottom: 0.5px solid var(--color-border);
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;
   }
   .admin-header h2 { font-size: 17px; font-weight: 600; }
   .admin-header .count-badge { font-size: 12px; color: var(--color-text-tertiary); }
-
   .nav-tab { display: flex; gap: 6px; padding: 0 1.25rem; margin-bottom: 1.25rem; }
   .tab-btn {
-    flex: 1; padding: 9px;
-    font-size: 13px;
-    border: 0.5px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: transparent;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s;
+    flex: 1; padding: 9px; font-size: 13px; border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-md); background: transparent; color: var(--color-text-secondary);
+    cursor: pointer; font-family: inherit; transition: all 0.15s;
   }
-  .tab-btn.active {
-    background: var(--green-light);
-    color: var(--green-dark);
-    border-color: var(--green);
-    font-weight: 500;
-  }
-
+  .tab-btn.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); font-weight: 500; }
   .metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    padding: 0 1.25rem;
-    margin-bottom: 1.5rem;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px; padding: 0 1.25rem; margin-bottom: 1.5rem;
   }
-  .metrics-grid .metric-card:last-child {
-    grid-column: 1 / -1;
-  }
-  .metric-card {
-    background: var(--color-bg-secondary);
-    border-radius: var(--radius-md);
-    padding: 14px;
-  }
+  .metrics-grid .metric-card:last-child { grid-column: 1 / -1; }
+  .metric-card { background: var(--color-bg-secondary); border-radius: var(--radius-md); padding: 14px; }
   .metric-card .m-label { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 4px; }
   .metric-card .m-val { font-size: 28px; font-weight: 600; color: var(--color-text-primary); line-height: 1; }
   .metric-card .m-sub { font-size: 11px; color: var(--color-text-secondary); margin-top: 4px; }
-
   .section-title {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--color-text-tertiary);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    padding: 0 1.25rem;
-    margin-bottom: 8px;
+    font-size: 11px; font-weight: 500; color: var(--color-text-tertiary);
+    text-transform: uppercase; letter-spacing: 0.07em; padding: 0 1.25rem; margin-bottom: 8px;
   }
-
   .card-list {
-    margin: 0 1.25rem 1.5rem;
-    border: 0.5px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    background: var(--color-bg);
+    margin: 0 1.25rem 1.5rem; border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-lg); overflow: hidden; background: var(--color-bg);
   }
-  .card-row {
-    display: flex; align-items: center;
-    padding: 11px 14px;
-    border-bottom: 0.5px solid var(--color-border);
-    gap: 8px;
-  }
+  .card-row { display: flex; align-items: center; padding: 11px 14px; border-bottom: 0.5px solid var(--color-border); gap: 8px; }
   .card-row:last-child { border-bottom: none; }
   .row-name { font-size: 13px; font-weight: 500; flex: 1; }
-  .pill {
-    font-size: 11px; padding: 3px 9px;
-    border-radius: 999px; white-space: nowrap;
-  }
+  .pill { font-size: 11px; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
   .pill-green { background: var(--green-light); color: var(--green-dark); }
   .pill-blue { background: var(--blue-light); color: var(--blue-dark); margin-left: 4px; }
   .pill-gray { background: var(--color-bg-secondary); color: var(--color-text-tertiary); }
-
   .chart-wrap { margin: 0 1.25rem 1.5rem; position: relative; height: 210px; }
-
-  /* Legend */
-  .legend {
-    display: flex; gap: 16px;
-    padding: 0 1.25rem;
-    margin-bottom: 8px;
-    font-size: 12px;
-    color: var(--color-text-secondary);
-  }
-  .legend-dot {
-    display: inline-block;
-    width: 10px; height: 10px;
-    border-radius: 2px;
-    margin-right: 5px;
-    vertical-align: middle;
-  }
-
-  .response-item {
-    padding: 12px 14px;
-    border-bottom: 0.5px solid var(--color-border);
-  }
+  .response-item { padding: 12px 14px; border-bottom: 0.5px solid var(--color-border); }
   .response-item:last-child { border-bottom: none; }
   .r-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
   .r-name { font-size: 13px; font-weight: 500; }
   .r-meta { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 3px; }
   .r-detail { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
-  .del-btn {
-    background: none; border: none; cursor: pointer;
-    color: var(--color-text-tertiary); padding: 4px 6px; border-radius: 4px;
-    font-size: 15px; line-height: 1;
-  }
+  .del-btn { background: none; border: none; cursor: pointer; color: var(--color-text-tertiary); padding: 4px 6px; border-radius: 4px; font-size: 15px; line-height: 1; }
   .del-btn:hover { color: var(--color-danger); background: #fdf0ef; }
-
-  .empty-state {
-    text-align: center; padding: 2.5rem 1rem;
-    color: var(--color-text-tertiary); font-size: 13px; line-height: 1.6;
+  .empty-state { text-align: center; padding: 2.5rem 1rem; color: var(--color-text-tertiary); font-size: 13px; line-height: 1.6; }
+  .danger-btn {
+    width: calc(100% - 2.5rem); margin: 0 1.25rem 1.25rem;
+    background: transparent; color: var(--color-danger);
+    border: 0.5px solid rgba(192,57,43,0.3); border-radius: var(--radius-lg);
+    padding: 11px; font-size: 13px; cursor: pointer; font-family: inherit;
   }
 
-  .danger-btn {
-    width: calc(100% - 2.5rem);
-    margin: 0 1.25rem 1.25rem;
-    background: transparent;
-    color: var(--color-danger);
-    border: 0.5px solid rgba(192,57,43,0.3);
-    border-radius: var(--radius-lg);
-    padding: 11px;
-    font-size: 13px;
-    cursor: pointer;
-    font-family: inherit;
+  /* 載入狀態 */
+  .loading-state { text-align: center; padding: 2rem 1rem; color: var(--color-text-tertiary); font-size: 13px; }
+  .admin-refresh-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: transparent; border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-md); padding: 6px 12px; font-size: 12px;
+    color: var(--color-text-secondary); cursor: pointer; font-family: inherit;
   }
 </style>
 </head>
 <body>
 <div class="container">
+
+  <!-- LINE 提示 -->
+  <div class="line-hint" id="line-hint">
+    📱 若選單無法點選，請點右上角「⋯」→「用瀏覽器開啟」
+  </div>
+
+  <!-- 選單遮罩 -->
+  <div class="select-overlay" id="select-overlay" onclick="closeFamilySelect()"></div>
 
   <!-- 填寫表單 -->
   <div id="page-form" class="page active">
@@ -420,20 +300,28 @@
     <div class="form-body">
       <div class="field">
         <label>所屬家族 <span class="req">*</span></label>
-        <select id="family">
-          <option value="">請選擇家族</option>
-          <option>許鳳英</option>
-          <option>紀瑞熙</option>
-          <option>紀振芳</option>
-          <option>紀志儒</option>
-          <option>紀麗華</option>
-          <option>紀富男</option>
-        </select>
+        <div class="custom-select-wrap">
+          <div class="custom-select-trigger placeholder" id="family-trigger" onclick="toggleFamilySelect()">
+            <span id="family-display">請選擇家族</span>
+            <i class="ti ti-chevron-down custom-select-arrow"></i>
+          </div>
+          <div class="custom-select-dropdown" id="family-dropdown">
+            <div class="custom-select-option" onclick="selectFamily('許鳳英')">許鳳英</div>
+            <div class="custom-select-option" onclick="selectFamily('紀瑞熙')">紀瑞熙</div>
+            <div class="custom-select-option" onclick="selectFamily('紀振芳')">紀振芳</div>
+            <div class="custom-select-option" onclick="selectFamily('紀志儒')">紀志儒</div>
+            <div class="custom-select-option" onclick="selectFamily('紀麗華')">紀麗華</div>
+            <div class="custom-select-option" onclick="selectFamily('紀富男')">紀富男</div>
+          </div>
+        </div>
+        <input type="hidden" id="family" value="">
       </div>
+
       <div class="field">
         <label>填寫人姓名 <span class="req">*</span></label>
         <input type="text" id="name" placeholder="請填寫您的姓名">
       </div>
+
       <div class="field">
         <label>出席人數 <span class="req">*</span></label>
         <div class="date-cards">
@@ -464,6 +352,7 @@
               </div>
             </div>
           </div>
+
           <div class="date-card selected" id="card-712">
             <div class="date-card-top">
               <div class="date-checkbox" id="chk-712"><i class="ti ti-check"></i></div>
@@ -493,11 +382,12 @@
           </div>
         </div>
       </div>
+
       <div class="field">
         <label>備註（選填）</label>
         <textarea id="note" placeholder="例如：行動不便需無障礙座位、其他需求..."></textarea>
       </div>
-      <button class="submit-btn" onclick="submitForm()">確認送出</button>
+      <button class="submit-btn" id="submit-btn" onclick="submitForm()">確認送出</button>
       <button class="secondary-btn" onclick="goAdmin()">管理員後台 →</button>
     </div>
   </div>
@@ -527,7 +417,9 @@
   <div id="page-admin" class="page">
     <div class="admin-header">
       <h2>管理員後台</h2>
-      <span class="count-badge" id="admin-count"></span>
+      <button class="admin-refresh-btn" onclick="renderAdmin()">
+        <i class="ti ti-refresh"></i> 重新整理
+      </button>
     </div>
     <div class="nav-tab">
       <button class="tab-btn active" id="tab-overview" onclick="switchTab('overview')">統計總覽</button>
@@ -538,24 +430,22 @@
       <div class="metrics-grid">
         <div class="metric-card">
           <div class="m-label">7/11 晚餐出席</div>
-          <div class="m-val" id="m-711">0</div>
+          <div class="m-val" id="m-711">—</div>
           <div class="m-sub">人</div>
         </div>
         <div class="metric-card">
           <div class="m-label">7/12 出席</div>
-          <div class="m-val" id="m-712">0</div>
+          <div class="m-val" id="m-712">—</div>
           <div class="m-sub">人</div>
         </div>
         <div class="metric-card">
           <div class="m-label">已回覆家族</div>
-          <div class="m-val" id="m-replied">0</div>
+          <div class="m-val" id="m-replied">—</div>
           <div class="m-sub">/ 6 個家族</div>
         </div>
       </div>
-
       <div class="section-title">各家族出席狀況</div>
-      <div class="card-list" id="family-table"></div>
-
+      <div class="card-list" id="family-table"><div class="loading-state">載入中…</div></div>
       <div class="chart-wrap">
         <canvas id="attendChart" role="img" aria-label="各家族出席人數長條圖">出席人數統計圖</canvas>
       </div>
@@ -563,7 +453,6 @@
 
     <div id="admin-records" style="display:none">
       <div class="card-list" id="response-list"></div>
-      <button class="danger-btn" onclick="if(confirm('確定清除所有資料？此動作無法復原。'))clearAll()">清除所有資料</button>
     </div>
 
     <button class="secondary-btn" style="margin:0 1.25rem 2rem;width:calc(100% - 2.5rem)" onclick="goPage('form')">← 返回表單</button>
@@ -573,11 +462,46 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
+// ═══════════════════════════════════════════
+// ★ 填入你的 Google Apps Script Web App URL
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbz0UkccdDpui3GJi_HRDDBhLn93CxZdxcVqkCwSL6vg8JlZDKXpBBQ6G6E7tNbzl_FD/exec';
+// ═══════════════════════════════════════════
+
 const FAMILIES = ['許鳳英','紀瑞熙','紀振芳','紀志儒','紀麗華','紀富男'];
 const ADMIN_PASS = '2026family';
-const STORAGE_KEY = 'ji_reunion_2026';
 let chartInstance = null;
 
+/* ── LINE 偵測 ── */
+if (/Line\//i.test(navigator.userAgent || '')) {
+  document.getElementById('line-hint').style.display = 'block';
+}
+
+/* ── 自製選單 ── */
+function toggleFamilySelect() {
+  const trigger = document.getElementById('family-trigger');
+  const dropdown = document.getElementById('family-dropdown');
+  const overlay = document.getElementById('select-overlay');
+  if (dropdown.classList.contains('open')) { closeFamilySelect(); return; }
+  trigger.classList.add('open');
+  dropdown.classList.add('open');
+  overlay.classList.add('active');
+}
+function closeFamilySelect() {
+  document.getElementById('family-trigger').classList.remove('open');
+  document.getElementById('family-dropdown').classList.remove('open');
+  document.getElementById('select-overlay').classList.remove('active');
+}
+function selectFamily(val) {
+  document.getElementById('family').value = val;
+  document.getElementById('family-display').textContent = val;
+  document.getElementById('family-trigger').classList.remove('placeholder');
+  document.querySelectorAll('#family-dropdown .custom-select-option').forEach(opt => {
+    opt.classList.toggle('selected', opt.textContent === val);
+  });
+  closeFamilySelect();
+}
+
+/* ── 頁面切換 ── */
 function goPage(p) {
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.getElementById('page-' + p).classList.add('active');
@@ -590,60 +514,99 @@ function checkPass() {
   else document.getElementById('pass-err').textContent = '密碼錯誤，請再試一次。';
 }
 
+/* ── 出席卡片 ── */
 function toggleCard(day) {
   const card = document.getElementById('card-' + day);
   const counts = document.getElementById('cnt-' + day);
   const sel = card.classList.toggle('selected');
   counts.style.display = sel ? 'flex' : 'none';
 }
-
 function adjust(day, type, delta, e) {
   e.stopPropagation();
   const el = document.getElementById('val-' + day + type);
   el.textContent = Math.max(type === 'a' ? 1 : 0, parseInt(el.textContent) + delta);
 }
-function loadData() {
-  try { const r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : []; } catch(e) { return []; }
-}
-function saveData(d) { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
-function submitForm() {
+
+/* ── 送出表單（寫入 Google Sheets） ── */
+async function submitForm() {
   const family = document.getElementById('family').value;
   const name = document.getElementById('name').value.trim();
   if (!family) { alert('請選擇家族'); return; }
   if (!name) { alert('請填寫姓名'); return; }
+
   const sel711 = document.getElementById('card-711').classList.contains('selected');
-  const entry = {
-    id: Date.now(), family, name,
-    day711: sel711 ? { adults: +document.getElementById('val-711a').textContent, kids: +document.getElementById('val-711k').textContent } : null,
-    day712: { adults: +document.getElementById('val-712a').textContent, kids: +document.getElementById('val-712k').textContent },
+  const payload = {
+    action: 'submit',
+    family, name,
+    day711: sel711 ? {
+      adults: +document.getElementById('val-711a').textContent,
+      kids:   +document.getElementById('val-711k').textContent
+    } : null,
+    day712: {
+      adults: +document.getElementById('val-712a').textContent,
+      kids:   +document.getElementById('val-712k').textContent
+    },
     note: document.getElementById('note').value.trim(),
     ts: new Date().toLocaleString('zh-TW')
   };
-  const data = loadData(); data.push(entry); saveData(data);
-  goPage('success');
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>送出中…';
+
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (json.status === 'ok') {
+      goPage('success');
+    } else {
+      alert('送出失敗：' + (json.message || '請稍後再試'));
+    }
+  } catch (err) {
+    alert('網路錯誤，請稍後再試。');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '確認送出';
+  }
 }
-function switchTab(t) {
-  ['overview','records'].forEach(x => {
-    document.getElementById('tab-' + x).classList.toggle('active', x === t);
-    document.getElementById('admin-' + x).style.display = x === t ? '' : 'none';
-  });
-  if (t === 'records') renderRecords();
-}
-function renderAdmin() {
-  const data = loadData();
+
+/* ── 管理後台（從 Google Sheets 讀取） ── */
+async function renderAdmin() {
+  document.getElementById('family-table').innerHTML = '<div class="loading-state">載入中…</div>';
+  ['m-711','m-712','m-replied'].forEach(id => document.getElementById(id).textContent = '…');
+
+  let data = [];
+  try {
+    const res = await fetch(GAS_URL + '?action=getAll');
+    const json = await res.json();
+    if (json.status === 'ok') { data = json.data; }
+    else { throw new Error(json.message); }
+  } catch (err) {
+    document.getElementById('family-table').innerHTML =
+      '<div class="empty-state">⚠️ 資料載入失敗<br>請確認網路或 GAS 設定</div>';
+    return;
+  }
+
+  // 統計
   let t711 = 0, t712 = 0;
   const fm = {}; FAMILIES.forEach(f => fm[f] = {d711:0, d712:0});
   data.forEach(r => {
-    const n711 = r.day711 ? r.day711.adults + r.day711.kids : 0;
-    const n712 = r.day712 ? r.day712.adults + r.day712.kids : 0;
+    const n711 = r.day711 ? (r.day711.adults + r.day711.kids) : 0;
+    const n712 = r.day712 ? (r.day712.adults + r.day712.kids) : 0;
     t711 += n711; t712 += n712;
     if (fm[r.family]) { fm[r.family].d711 += n711; fm[r.family].d712 += n712; }
   });
   const replied = new Set(data.map(r => r.family)).size;
+
   document.getElementById('m-711').textContent = t711;
   document.getElementById('m-712').textContent = t712;
   document.getElementById('m-replied').textContent = replied;
-  document.getElementById('admin-count').textContent = '共 ' + data.length + ' 筆回覆';
+  document.getElementById('admin-count') && (document.getElementById('admin-count').textContent = '共 ' + data.length + ' 筆');
+
+  // 家族列表
   const ft = document.getElementById('family-table');
   ft.innerHTML = '';
   FAMILIES.forEach(f => {
@@ -656,6 +619,8 @@ function renderAdmin() {
     row.innerHTML = `<span class="row-name">${f}</span>${pills}`;
     ft.appendChild(row);
   });
+
+  // 圖表
   const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
   const tc = isDark ? '#7a7a75' : '#9e9e99';
   const gc = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
@@ -665,8 +630,8 @@ function renderAdmin() {
     data: {
       labels: FAMILIES,
       datasets: [
-        { label: '7/11 晚', data: FAMILIES.map(f => fm[f].d711), backgroundColor: '#1D9E75', borderRadius: 4 },
-        { label: '7/12', data: FAMILIES.map(f => fm[f].d712), backgroundColor: '#378ADD', borderRadius: 4 }
+        { label: '7/11晚', data: FAMILIES.map(f => fm[f].d711), backgroundColor: '#1D9E75', borderRadius: 4 },
+        { label: '7/12',   data: FAMILIES.map(f => fm[f].d712), backgroundColor: '#378ADD', borderRadius: 4 }
       ]
     },
     options: {
@@ -678,11 +643,40 @@ function renderAdmin() {
       }
     }
   });
+
+  // 如果目前在「所有回覆」tab，也一起更新
+  if (document.getElementById('admin-records').style.display !== 'none') {
+    renderRecords(data);
+  }
 }
-function renderRecords() {
-  const data = loadData();
+
+function switchTab(t) {
+  ['overview','records'].forEach(x => {
+    document.getElementById('tab-' + x).classList.toggle('active', x === t);
+    document.getElementById('admin-' + x).style.display = x === t ? '' : 'none';
+  });
+  if (t === 'records') {
+    // 重新拉資料渲染回覆列表
+    fetchAndRenderRecords();
+  }
+}
+
+async function fetchAndRenderRecords() {
   const el = document.getElementById('response-list');
-  if (!data.length) { el.innerHTML = '<div class="empty-state">尚無回覆資料</div>'; return; }
+  el.innerHTML = '<div class="loading-state">載入中…</div>';
+  try {
+    const res = await fetch(GAS_URL + '?action=getAll');
+    const json = await res.json();
+    if (json.status === 'ok') renderRecords(json.data);
+    else throw new Error();
+  } catch {
+    el.innerHTML = '<div class="empty-state">⚠️ 載入失敗</div>';
+  }
+}
+
+function renderRecords(data) {
+  const el = document.getElementById('response-list');
+  if (!data || !data.length) { el.innerHTML = '<div class="empty-state">尚無回覆資料</div>'; return; }
   el.innerHTML = '';
   [...data].reverse().forEach(r => {
     const div = document.createElement('div'); div.className = 'response-item';
@@ -690,20 +684,12 @@ function renderRecords() {
     const d712 = r.day712 ? `7/12：${r.day712.adults}大${r.day712.kids}小` : '—';
     const dates = [d711, d712].filter(Boolean).join('　');
     div.innerHTML = `
-      <div class="r-top"><span class="r-name">${r.name}</span>
-        <button class="del-btn" onclick="deleteEntry(${r.id})" title="刪除"><i class="ti ti-trash" style="font-size:15px"></i></button>
-      </div>
+      <div class="r-top"><span class="r-name">${r.name}</span></div>
       <div class="r-meta">${r.family} · ${r.ts}</div>
       <div class="r-detail">${dates}${r.note ? '　備註：' + r.note : ''}</div>`;
     el.appendChild(div);
   });
 }
-function deleteEntry(id) {
-  if (!confirm('確定刪除這筆資料？')) return;
-  saveData(loadData().filter(r => r.id !== id));
-  renderRecords(); renderAdmin();
-}
-function clearAll() { saveData([]); renderRecords(); renderAdmin(); }
 </script>
 </body>
 </html>
